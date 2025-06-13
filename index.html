@@ -14,7 +14,7 @@
         /* Custom styles and animations */
         body {
             font-family: 'Inter', sans-serif;
-            background: #0c0a1f;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4f46e5 100%);
             overflow-x: hidden;
             overflow-y: auto;
         }
@@ -23,29 +23,6 @@
             overflow: hidden;
         }
 
-        /* Starry background animation */
-        .starry-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-                radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
-            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-            animation: move-stars 30s linear infinite;
-            z-index: -1;
-        }
-        @keyframes move-stars {
-            from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px; }
-            to { background-position: -550px -550px, -350px -350px, -250px -250px, -150px -150px; }
-        }
-
-
         .content-container {
             transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
             will-change: transform, opacity;
@@ -53,7 +30,7 @@
 
         #noBtn {
             position: absolute;
-            animation: floatAround 12s linear infinite;
+            animation: floatAround 15s linear infinite;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: top, left;
         }
@@ -79,73 +56,112 @@
         
         @keyframes floatAround {
             0%   { transform: translate(0px, 0px); }
-            25%  { transform: translate(40px, 60px); }
-            50%  { transform: translate(-50px, -30px); }
-            75%  { transform: translate(30px, -50px); }
+            25%  { transform: translate(30px, 50px); }
+            50%  { transform: translate(-40px, -20px); }
+            75%  { transform: translate(20px, -40px); }
             100% { transform: translate(0px, 0px); }
         }
         
         .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 10%, 30% { transform: scale(0.9); } 20%, 40%, 60% { transform: scale(1.1); } 50%, 70% { transform: scale(1.05); } }
 
-        /* UPGRADED Sad Face CSS Animation */
-        .sad-face-container { width: 150px; height: 150px; position: relative; }
-        .sad-face {
-            width: 100%; height: 100%; border-radius: 50%; background: #fde047;
-            border: 4px solid #facc15; position: relative; overflow: hidden;
-            animation: bob 4s ease-in-out infinite;
+        /* NEW: Sad Face CSS Animation */
+        .sad-face-container {
+            width: 150px;
+            height: 150px;
+            position: relative;
         }
-        @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .sad-face {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #fde047; /* yellow-300 */
+            border: 4px solid #facc15; /* yellow-400 */
+            position: relative;
+            overflow: hidden;
+        }
         .sad-face .eye {
-            width: 18px; height: 25px; background: #fff; border-radius: 50%;
-            position: absolute; top: 35%; overflow: hidden;
+            width: 15px;
+            height: 15px;
+            background: #1e293b; /* slate-800 */
+            border-radius: 50%;
+            position: absolute;
+            top: 40%;
         }
         .sad-face .eye.left { left: 25%; }
         .sad-face .eye.right { right: 25%; }
-        .sad-face .pupil { width: 12px; height: 12px; background: #1e293b; border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
         .sad-face .mouth {
-            width: 60px; height: 30px; border: 4px solid transparent; border-bottom-color: #1e293b;
-            border-radius: 0 0 60px 60px / 0 0 30px 30px; position: absolute;
-            bottom: 20%; left: 50%; transform: translateX(-50%);
-            animation: quiver 0.5s infinite alternate;
+            width: 60px;
+            height: 30px;
+            border: 4px solid transparent;
+            border-bottom-color: #1e293b;
+            border-radius: 0 0 60px 60px / 0 0 30px 30px;
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
         }
-        @keyframes quiver { from { transform: translateX(-51%) rotate(-1deg); } to { transform: translateX(-49%) rotate(1deg); } }
         .teardrop {
-            width: 12px; height: 12px; background: #38bdf8; border-radius: 50% 0 50% 50%;
-            position: absolute; top: 45%; right: 22%; transform: rotate(45deg);
-            animation: cry 2.5s cubic-bezier(0.6, 0.04, 0.98, 0.335) infinite; opacity: 0;
+            width: 10px;
+            height: 10px;
+            background: #38bdf8; /* sky-400 */
+            border-radius: 50% 0 50% 50%;
+            position: absolute;
+            top: 50%;
+            right: 22%;
+            transform: rotate(45deg);
+            animation: cry 3s ease-in-out infinite;
+            opacity: 0;
         }
-        @keyframes cry { 0% { top: 40%; opacity: 0; } 20% { opacity: 1; } 100% { top: 95%; opacity: 0; } }
+        @keyframes cry {
+            0% { top: 45%; opacity: 0; }
+            20% { opacity: 1; }
+            100% { top: 90%; opacity: 0; }
+        }
 
-        /* UPGRADED Confetti CSS Animation */
-        .confetti-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: hidden; pointer-events: none; }
-        .confetti-piece { position: absolute; width: 10px; height: 20px; opacity: 0; animation: fall 5s linear infinite; }
-        .confetti-piece.circle { width: 8px; height: 8px; border-radius: 50%; }
-        @keyframes fall {
-            from { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-            to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        /* NEW: Confetti CSS Animation */
+        .confetti-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
         }
-        
-        /* NEW Letter typing effect */
-        .letter-text p { opacity: 0; animation: fadeInWord 0.5s forwards; }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            opacity: 0;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            from {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen text-white p-4">
-
-    <div class="starry-background"></div>
 
     <!-- Letter Container -->
     <div id="letterContainer" class="content-container w-full max-w-2xl mx-auto my-12">
         <div class="bg-white/10 backdrop-blur-sm text-white rounded-2xl shadow-2xl p-6 md:p-10 border border-white/20">
             <h2 class="text-3xl font-bold mb-4 text-center">My Dearest Tanuuu,</h2>
-            <div class="text-lg space-y-4 letter-text">
-                <p style="animation-delay: 0.5s;">I'm writing this because I have something very important to say, and I want to make sure I say it right.</p>
-                <p style="animation-delay: 2.0s;" class="text-center font-bold text-2xl my-6 text-yellow-300">I am so, so sorry.</p>
-                <p style="animation-delay: 3.0s;">I know I messed up, and I can't stop thinking about how much I've hurt you. There are no excuses. My actions were thoughtless, and I deeply regret causing you pain. Seeing you upset is the worst feeling, and knowing I'm the reason breaks my heart.</p>
-                <p style="animation-delay: 6.0s;">The last few days felt empty without you. It's like the happy colors have gone out of my world. You are my best friend and the most important person in my life. I feel terrible for not treating you with the kindness and respect you always deserve.</p>
-                <p style="animation-delay: 9.5s;">I know saying sorry isn't enough, but I promise with all my heart that I've learned from this. I will be more careful. You are too precious to ever risk losing.</p>
-                <p style="animation-delay: 12.5s;" class="font-semibold">Please, can you find it in your heart to forgive me? I miss you more than words can say.</p>
-                <p style="animation-delay: 14.5s;" class="text-right font-bold mt-4">All my love</p>
+            <div class="text-lg space-y-4">
+                <p>I'm writing this because I have something very important to say, and I want to make sure I say it right.</p>
+                <p class="text-center font-bold text-2xl my-6 text-yellow-300">I am so, so sorry.</p>
+                <p>I know I messed up, and I can't stop thinking about how much I've hurt you. There are no excuses. My actions were thoughtless, and I deeply regret causing you pain. Seeing you upset is the worst feeling, and knowing I'm the reason breaks my heart.</p>
+                <p>The last few days felt empty without you. It's like the happy colors have gone out of my world. You are my best friend and the most important person in my life. I feel terrible for not treating you with the kindness and respect you always deserve.</p>
+                <p>I know saying sorry isn't enough, but I promise with all my heart that I've learned from this. I will be more careful. You are too precious to ever risk losing.</p>
+                <p class="font-semibold">Please, can you find it in your heart to forgive me? I miss you more than words can say.</p>
+                <p class="text-right font-bold mt-4">All my love</p>
             </div>
         </div>
         <div class="text-center mt-8 flex flex-col items-center">
@@ -159,10 +175,11 @@
     <!-- Main Question Container -->
     <div id="mainContainer" class="hidden content-container text-center p-8 fixed inset-0 flex flex-col items-center justify-center">
         <div class="mb-6 sad-animation">
+            <!-- SAD FACE ANIMATION -->
             <div class="sad-face-container mx-auto">
                 <div class="sad-face">
-                    <div class="eye left"><div class="pupil"></div></div>
-                    <div class="eye right"><div class="pupil"></div></div>
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
                     <div class="mouth"></div>
                     <div class="teardrop"></div>
                 </div>
@@ -182,6 +199,7 @@
     <!-- Celebration Message -->
     <div id="celebrationContainer" class="hidden content-container text-center p-8 fixed inset-0 flex flex-col items-center justify-center">
         <div class="celebration-animation relative">
+            <!-- CONFETTI ANIMATION -->
             <div class="confetti-container"></div>
             <h1 class="text-4xl md:text-6xl font-extrabold mt-8 relative z-10">Thank you! You're the best!</h1>
         </div>
@@ -216,7 +234,7 @@
             noBtn.style.left = `${randomX}px`;
             noBtn.style.animation = 'none';
             void noBtn.offsetWidth; 
-            noBtn.style.animation = 'floatAround 12s linear infinite';
+            noBtn.style.animation = 'floatAround 15s linear infinite';
         }
         
         noBtn.addEventListener('mouseover', moveButton);
@@ -225,17 +243,12 @@
         function createConfetti() {
             const container = document.querySelector('.confetti-container');
             const colors = ['#fde047', '#f87171', '#4ade80', '#60a5fa', '#a78bfa'];
-            for (let i = 0; i < 150; i++) { // More confetti!
+            for (let i = 0; i < 100; i++) {
                 const piece = document.createElement('div');
-                const isCircle = Math.random() > 0.5;
                 piece.classList.add('confetti-piece');
-                if (isCircle) {
-                    piece.classList.add('circle');
-                }
                 piece.style.left = `${Math.random() * 100}vw`;
                 piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 piece.style.animationDelay = `${Math.random() * 5}s`;
-                piece.style.animationDuration = `${3 + Math.random() * 2}s`;
                 piece.style.transform = `rotate(${Math.random() * 360}deg)`;
                 container.appendChild(piece);
             }
@@ -254,4 +267,5 @@
 
 </body>
 </html>
+
 
