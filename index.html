@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Important Question</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles and animations */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent scrollbars from moving elements */
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4f46e5 100%);
+        }
+
+        .content-container {
+            transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+            will-change: transform, opacity; /* Performance optimization */
+        }
+
+        #noBtn {
+            position: absolute;
+            animation: floatAround 15s linear infinite;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: top, left; /* Performance optimization */
+        }
+        
+        #yesBtn, #readLetterBtn {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        #yesBtn:hover, #readLetterBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .celebration {
+            animation: fadeIn 1s ease-in-out forwards, popIn 0.5s 0.5s ease-out backwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .fade-out {
+            opacity: 0 !important;
+            transform: scale(0.9) !important;
+            pointer-events: none;
+        }
+        
+        /* Continuous floating animation for the 'No' button */
+        @keyframes floatAround {
+            0%   { transform: translate(0px, 0px); }
+            25%  { transform: translate(20px, 40px); }
+            50%  { transform: translate(-30px, -10px); }
+            75%  { transform: translate(10px, -30px); }
+            100% { transform: translate(0px, 0px); }
+        }
+        
+        /* Heartbeat animation for the icon */
+        .heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(0.9); }
+            20%, 40%, 60% { transform: scale(1.1); }
+            50%, 70% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-white p-4">
+
+    <!-- Letter Container (Initially Visible) -->
+    <div id="letterContainer" class="content-container w-full max-w-2xl mx-auto">
+        <div class="bg-white/10 backdrop-blur-sm text-white rounded-2xl shadow-2xl p-6 md:p-10 border border-white/20">
+            <h2 class="text-3xl font-bold mb-4 text-center">My Dearest Tanuuu,</h2>
+            <div class="text-lg space-y-4">
+                <p>I'm writing this because I have something very important to say, and I want to make sure I say it right.</p>
+                <p class="text-center font-bold text-2xl my-6 text-yellow-300">I am so, so sorry.</p>
+                <p>I know I messed up, and I can't stop thinking about how much I've hurt you. There are no excuses. My actions were thoughtless, and I deeply regret causing you pain. Seeing you upset is the worst feeling, and knowing I'm the reason breaks my heart.</p>
+                <p>The last few days felt empty without you. It's like the happy colors have gone out of my world. You are my best friend and the most important person in my life. I feel terrible for not treating you with the kindness and respect you always deserve.</p>
+                <p>I know saying sorry isn't enough, but I promise with all my heart that I've learned from this. I will be more careful. You are too precious to ever risk losing.</p>
+                <p class="font-semibold">Please, can you find it in your heart to forgive me? I miss you more than words can say.</p>
+                <p class="text-right font-bold mt-4">All my love</p>
+            </div>
+        </div>
+        <div class="text-center mt-8 flex flex-col items-center">
+            <svg class="w-10 h-10 text-red-400 heartbeat mb-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+            <button id="readLetterBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg">
+                Please Read This...
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Question Container (Initially Hidden) -->
+    <div id="mainContainer" class="hidden content-container text-center p-8">
+        <div class="mb-6">
+             <img src="https://media1.tenor.com/m/f2oCDs0qS2gAAAAC/sorry-sad.gif" alt="Animated character looking sad" class="mx-auto rounded-lg shadow-lg w-48 h-48 object-cover">
+        </div>
+        <h1 class="text-3xl md:text-5xl font-bold mb-8">Will you forgive me?</h1>
+        <div id="buttonsContainer" class="flex flex-col sm:flex-row items-center justify-center gap-4 relative h-16">
+            <button id="yesBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg">
+                I forgive you
+            </button>
+            <button id="noBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg">
+                No
+            </button>
+        </div>
+    </div>
+
+    <!-- Celebration Message (Initially Hidden) -->
+    <div id="celebrationContainer" class="hidden text-center p-8">
+        <div class="celebration">
+            <img src="https://media1.tenor.com/m/p1G0iY2F_SAAAAAC/tkthao219-bubududu.gif" alt="Happy hug animation" class="mx-auto rounded-lg shadow-lg w-56 h-56 object-cover">
+            <h1 class="text-4xl md:text-6xl font-extrabold mt-8">Thank you! You're the best!</h1>
+        </div>
+    </div>
+
+    <script>
+        const letterContainer = document.getElementById('letterContainer');
+        const mainContainer = document.getElementById('mainContainer');
+        const celebrationContainer = document.getElementById('celebrationContainer');
+        
+        const readLetterBtn = document.getElementById('readLetterBtn');
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+
+        readLetterBtn.addEventListener('click', () => {
+            letterContainer.classList.add('fade-out');
+            setTimeout(() => {
+                letterContainer.style.display = 'none';
+                mainContainer.classList.remove('hidden');
+            }, 700);
+        });
+
+        function moveButton() {
+            const containerRect = document.body.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            let randomX = Math.random() * (containerRect.width - btnRect.width);
+            let randomY = Math.random() * (containerRect.height - btnRect.height);
+
+            // Set new position
+            noBtn.style.top = `${randomY}px`;
+            noBtn.style.left = `${randomX}px`;
+
+            // Reset animation to avoid conflicting with the new position
+            noBtn.style.animation = 'none';
+            // Trigger reflow to apply the new position before re-enabling animation
+            void noBtn.offsetWidth; 
+            noBtn.style.animation = 'floatAround 15s linear infinite';
+        }
+        
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('click', moveButton);
+
+        yesBtn.addEventListener('click', () => {
+            mainContainer.classList.add('fade-out');
+            setTimeout(() => {
+                mainContainer.style.display = 'none';
+                celebrationContainer.classList.remove('hidden');
+            }, 700);
+        });
+
+        // Set an initial position for the 'No' button relative to its container
+        window.addEventListener('DOMContentLoaded', () => {
+           const initialContainerRect = buttonsContainer.getBoundingClientRect();
+           const bodyRect = document.body.getBoundingClientRect();
+           noBtn.style.top = `${initialContainerRect.top}px`;
+           noBtn.style.left = `${initialContainerRect.left + initialContainerRect.width / 2 + 20}px`;
+        });
+    </script>
+
+</body>
+</html>
