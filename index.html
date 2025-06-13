@@ -14,8 +14,14 @@
         /* Custom styles and animations */
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Prevent scrollbars from moving elements */
             background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4f46e5 100%);
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-y: auto; /* Allow vertical scroll for the letter */
+        }
+
+        /* Class to disable scrolling when the question is active */
+        body.no-scroll {
+            overflow: hidden;
         }
 
         .content-container {
@@ -27,7 +33,7 @@
             position: absolute;
             animation: floatAround 15s linear infinite;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: top, left; /* Performance optimization */
+            will-change: top, left;
         }
         
         #yesBtn, #readLetterBtn {
@@ -61,16 +67,14 @@
             pointer-events: none;
         }
         
-        /* Continuous floating animation for the 'No' button */
         @keyframes floatAround {
             0%   { transform: translate(0px, 0px); }
-            25%  { transform: translate(20px, 40px); }
-            50%  { transform: translate(-30px, -10px); }
-            75%  { transform: translate(10px, -30px); }
+            25%  { transform: translate(30px, 50px); }
+            50%  { transform: translate(-40px, -20px); }
+            75%  { transform: translate(20px, -40px); }
             100% { transform: translate(0px, 0px); }
         }
         
-        /* Heartbeat animation for the icon */
         .heartbeat {
             animation: heartbeat 1.5s ease-in-out infinite;
         }
@@ -86,7 +90,7 @@
 <body class="flex items-center justify-center min-h-screen text-white p-4">
 
     <!-- Letter Container (Initially Visible) -->
-    <div id="letterContainer" class="content-container w-full max-w-2xl mx-auto">
+    <div id="letterContainer" class="content-container w-full max-w-2xl mx-auto my-12">
         <div class="bg-white/10 backdrop-blur-sm text-white rounded-2xl shadow-2xl p-6 md:p-10 border border-white/20">
             <h2 class="text-3xl font-bold mb-4 text-center">My Dearest Tanuuu,</h2>
             <div class="text-lg space-y-4">
@@ -108,12 +112,12 @@
     </div>
 
     <!-- Main Question Container (Initially Hidden) -->
-    <div id="mainContainer" class="hidden content-container text-center p-8">
+    <div id="mainContainer" class="hidden content-container text-center p-8 fixed inset-0 flex flex-col items-center justify-center">
         <div class="mb-6">
              <img src="https://media1.tenor.com/m/f2oCDs0qS2gAAAAC/sorry-sad.gif" alt="Animated character looking sad" class="mx-auto rounded-lg shadow-lg w-48 h-48 object-cover">
         </div>
         <h1 class="text-3xl md:text-5xl font-bold mb-8">Will you forgive me?</h1>
-        <div id="buttonsContainer" class="flex flex-col sm:flex-row items-center justify-center gap-4 relative h-16">
+        <div id="buttonsContainer" class="flex items-center justify-center gap-4 relative h-16 w-full max-w-xs">
             <button id="yesBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-xl shadow-lg">
                 I forgive you
             </button>
@@ -124,7 +128,7 @@
     </div>
 
     <!-- Celebration Message (Initially Hidden) -->
-    <div id="celebrationContainer" class="hidden text-center p-8">
+    <div id="celebrationContainer" class="hidden content-container text-center p-8 fixed inset-0 flex items-center justify-center">
         <div class="celebration">
             <img src="https://media1.tenor.com/m/p1G0iY2F_SAAAAAC/tkthao219-bubududu.gif" alt="Happy hug animation" class="mx-auto rounded-lg shadow-lg w-56 h-56 object-cover">
             <h1 class="text-4xl md:text-6xl font-extrabold mt-8">Thank you! You're the best!</h1>
@@ -139,13 +143,21 @@
         const readLetterBtn = document.getElementById('readLetterBtn');
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-        const buttonsContainer = document.getElementById('buttonsContainer');
 
         readLetterBtn.addEventListener('click', () => {
             letterContainer.classList.add('fade-out');
+            
             setTimeout(() => {
                 letterContainer.style.display = 'none';
                 mainContainer.classList.remove('hidden');
+                // Disable scrolling only when the question part is active
+                document.body.classList.add('no-scroll');
+                
+                // Set initial position for the 'No' button after the container is visible
+                const initialContainerRect = document.getElementById('buttonsContainer').getBoundingClientRect();
+                noBtn.style.top = `${initialContainerRect.top}px`;
+                noBtn.style.left = `${initialContainerRect.left + initialContainerRect.width - noBtn.offsetWidth}px`;
+
             }, 700);
         });
 
@@ -156,13 +168,10 @@
             let randomX = Math.random() * (containerRect.width - btnRect.width);
             let randomY = Math.random() * (containerRect.height - btnRect.height);
 
-            // Set new position
             noBtn.style.top = `${randomY}px`;
             noBtn.style.left = `${randomX}px`;
 
-            // Reset animation to avoid conflicting with the new position
             noBtn.style.animation = 'none';
-            // Trigger reflow to apply the new position before re-enabling animation
             void noBtn.offsetWidth; 
             noBtn.style.animation = 'floatAround 15s linear infinite';
         }
@@ -175,15 +184,9 @@
             setTimeout(() => {
                 mainContainer.style.display = 'none';
                 celebrationContainer.classList.remove('hidden');
+                 // Re-enable scrolling on the final screen if needed
+                document.body.classList.remove('no-scroll');
             }, 700);
-        });
-
-        // Set an initial position for the 'No' button relative to its container
-        window.addEventListener('DOMContentLoaded', () => {
-           const initialContainerRect = buttonsContainer.getBoundingClientRect();
-           const bodyRect = document.body.getBoundingClientRect();
-           noBtn.style.top = `${initialContainerRect.top}px`;
-           noBtn.style.left = `${initialContainerRect.left + initialContainerRect.width / 2 + 20}px`;
         });
     </script>
 
